@@ -57,6 +57,27 @@ def _make_dummy_env(**kwargs):
     )
 
 
+def test_auto_mounts_disabled_skips_hermes_managed_host_mounts(monkeypatch):
+    """Worker profiles can decline credentials, skills, and cache mounts."""
+    monkeypatch.setattr(docker_env, "find_docker", lambda: "/usr/bin/docker")
+    _mock_subprocess_run(monkeypatch)
+
+    def unexpected_mount_lookup():
+        pytest.fail("automatic Hermes host-mount lookup must be skipped")
+
+    monkeypatch.setattr(
+        "tools.credential_files.get_credential_file_mounts", unexpected_mount_lookup,
+    )
+    monkeypatch.setattr(
+        "tools.credential_files.get_skills_directory_mount", unexpected_mount_lookup,
+    )
+    monkeypatch.setattr(
+        "tools.credential_files.get_cache_directory_mounts", unexpected_mount_lookup,
+    )
+
+    _make_dummy_env(auto_mounts=False, persist_across_processes=False)
+
+
 def test_ensure_docker_available_logs_and_raises_when_not_found(monkeypatch, caplog):
     """When docker cannot be found, raise a clear error before container setup."""
 

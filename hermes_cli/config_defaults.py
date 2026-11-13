@@ -313,6 +313,9 @@ DEFAULT_CONFIG = {
         # Explicit opt-in: mount the host cwd into /workspace for Docker sessions.
         # Default off because passing host directories into a sandbox weakens isolation.
         "docker_mount_cwd_to_workspace": False,
+        # Hermes normally mounts profile credentials, skills, and caches
+        # read-only. Worker profiles can opt out for host-free execution.
+        "docker_auto_mounts": True,
         # Opt-in egress lockdown for Docker terminal sessions. When false,
         # Docker runs with --network=none so commands cannot reach the network.
         "docker_network": True,
