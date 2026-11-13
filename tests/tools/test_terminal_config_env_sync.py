@@ -176,6 +176,7 @@ def test_save_config_set_supports_critical_bridged_keys():
     required = {
         "docker_run_as_host_user",
         "docker_mount_cwd_to_workspace",
+        "docker_auto_mounts",
         "backend",
         "docker_image",
         "container_cpu",
@@ -215,6 +216,14 @@ def test_docker_mount_cwd_to_workspace_is_bridged_everywhere():
     assert "docker_mount_cwd_to_workspace" in _gateway_env_map_keys()
     assert "docker_mount_cwd_to_workspace" in _save_config_env_sync_keys()
     assert "TERMINAL_DOCKER_MOUNT_CWD_TO_WORKSPACE" in _terminal_tool_env_var_names()
+
+
+def test_docker_auto_mounts_is_bridged_everywhere():
+    """Workers must be able to turn off automatic Hermes host mounts on every path."""
+    assert "docker_auto_mounts" in _cli_env_map_keys()
+    assert "docker_auto_mounts" in _gateway_env_map_keys()
+    assert "docker_auto_mounts" in _save_config_env_sync_keys()
+    assert "TERMINAL_DOCKER_AUTO_MOUNTS" in _terminal_tool_env_var_names()
 
 
 def test_docker_env_is_bridged_everywhere():

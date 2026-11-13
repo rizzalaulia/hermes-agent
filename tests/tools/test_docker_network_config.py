@@ -18,6 +18,14 @@ def test_terminal_env_config_reads_docker_network_toggle(monkeypatch):
     assert config["docker_network"] is False
 
 
+def test_terminal_env_config_reads_docker_auto_mounts_toggle(monkeypatch):
+    monkeypatch.setenv("TERMINAL_DOCKER_AUTO_MOUNTS", "false")
+
+    config = terminal_tool._get_env_config()
+
+    assert config["docker_auto_mounts"] is False
+
+
 def test_sibling_container_config_sites_carry_docker_network():
     """Every container_config dict that carries docker_run_as_host_user must
     also carry docker_network — otherwise that code path silently falls back

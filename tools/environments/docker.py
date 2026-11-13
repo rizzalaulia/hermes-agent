@@ -859,6 +859,7 @@ class DockerEnvironment(BaseEnvironment):
         network: bool = True,
         host_cwd: str = None,
         auto_mount_cwd: bool = False,
+        auto_mounts: bool = True,
         run_as_host_user: bool = False,
         extra_args: list = None,
         persist_across_processes: bool = True,
@@ -987,6 +988,9 @@ class DockerEnvironment(BaseEnvironment):
                 get_skills_directory_mount,
                 get_cache_directory_mounts,
             )
+
+            if not auto_mounts:
+                get_credential_file_mounts = get_skills_directory_mount = get_cache_directory_mounts = lambda: []
 
             for mount_entry in get_credential_file_mounts():
                 src = Path(mount_entry["host_path"])
